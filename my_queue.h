@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <vector>
 
 // push to end
 // pop from front
@@ -30,7 +30,12 @@ class MY_Queue {
 		size += 1;
 	}
 
-	T top(){ return !empty() ? first_node->value : NULL; } 
+	T top(){ 
+		if(!empty()){
+			return first_node->data;
+		}
+		return T();
+	} 
 
 	void pop(){
 		Node* tmp = first_node;

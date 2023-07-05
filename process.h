@@ -15,6 +15,16 @@ class Process {
 	int num_of_bursts;
 
 	public:
+	Process(){
+		this->state = NEW;
+		this->process_id = 0;
+		this->arrival_time = 0;
+
+		vector<int> v;
+		this->bursts = v;
+		this->index_of_burst = 0;
+		this->num_of_bursts = 0;
+	}
 	Process(int process_id, int arrival_time, vector<int> bursts){
 		this->state = NEW;
 		this->process_id = process_id;
@@ -29,7 +39,11 @@ class Process {
 		this->state = state;
 	}
 
-	 bool operator==(const Process& other) const {
-        return process_id == other.process_id;
-    }
+	bool operator==(const Process& other) const {
+		return process_id == other.process_id;
+	}
+	
+	bool operator!=(const Process& other) const {
+		return process_id != other.process_id;
+	}
 };

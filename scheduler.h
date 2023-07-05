@@ -10,7 +10,7 @@ using namespace std;
 
 MY_Queue<Process> job_queue;
 vector<int> NULL_V;
-Process NULL_PROCESS = Process(0, 0, NULL_V);
+Process NULL_PROCESS = Process();
 
 template <typename T>
 class Scheduler {
