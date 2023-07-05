@@ -30,6 +30,12 @@ class Process {
 		this->process_id = process_id;
 		this->arrival_time = arrival_time;
 
+		// cout << "====================";
+		// cout << process_id << endl;
+		// for (const auto& burst : bursts) {
+		//    cout << burst << " ";
+		// }cout << endl;
+
 		this->bursts = bursts;
 		this->index_of_burst = 0;
 		this->num_of_bursts = 3;
@@ -46,4 +52,9 @@ class Process {
 	bool operator!=(const Process& other) const {
 		return process_id != other.process_id;
 	}
+
+	friend std::ostream& operator<<(std::ostream& os, const Process& obj) {
+        os << obj.process_id;
+        return os;
+    }
 };

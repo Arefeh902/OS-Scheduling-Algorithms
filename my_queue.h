@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 
+using namespace std;
+
 // push to end
 // pop from front
 template <typename T>
@@ -15,6 +17,12 @@ class MY_Queue {
 	Node* first_node;
 	Node* last_node;
 	size_t size;
+
+	MY_Queue () {
+		size = 0;
+		first_node = nullptr;
+		last_node = nullptr;
+	}
 
 	bool empty(){ return size == 0; }
 
@@ -42,6 +50,15 @@ class MY_Queue {
 		first_node = first_node->next;
 		delete tmp;
 		size -= 1;
+	}
+
+	void print(){
+		Node* tmp = first_node;
+		while(tmp != nullptr){
+			cout << tmp->data << " ";
+			tmp = tmp->next;
+		}
+		cout << endl;
 	}
 
 };
