@@ -5,7 +5,7 @@
 // pop from front
 template <typename T>
 class MY_Queue {
-	
+	public:
 	struct Node {
 		T data;
 		Node* next;
@@ -20,7 +20,10 @@ class MY_Queue {
 
 	void push(T data){
 		Node* new_node= new Node(data);
-		if(empty()) first_node = new_node;
+		if(empty()){
+			first_node = new_node;
+			last_node = new_node;
+		} 
 		new_node->next = nullptr;
 		last_node->next = new_node;
 		last_node = new_node;
