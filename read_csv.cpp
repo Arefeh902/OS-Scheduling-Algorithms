@@ -4,11 +4,11 @@
 #include <string>
 #include <vector>
 #include <sstream>
- 
+#include "process.h"
+
 using namespace std;
  
-int main()
-{
+int main(){
 	string fname="tmp.csv";
  
 	vector<vector<string>> content;
@@ -29,9 +29,7 @@ int main()
 			vector<int> bursts;
 			for(int i=2; i<row.size(); i++)
 				bursts.push_back(stoi(row[i]));
-
-
-			content.push_back(row);
+			Process tmp = Process(stoi(row[0]), stoi(row[1]), bursts);
 		}
 	}
 	else

@@ -1,5 +1,8 @@
 #include <iostream>
+#include <fstream>
+#include <string>
 #include <vector>
+#include <sstream>
 
 #include "my_queue.h"
 #include "process.h"
@@ -20,6 +23,8 @@ class Scheduler {
 	MY_Queue<Process> io_queue;
 	Process using_io;
 
+	MY_Queue<Process> terminated_queue;
+
 	Scheduler() : num_of_process(0), running(NULL_PROCESS), using_io(NULL_PROCESS) {}
 
 	void admit(int t){
@@ -28,7 +33,7 @@ class Scheduler {
 
 		ready_queue.push(p);
 		p.set_state(READY);
-
+		
 		num_of_process += 1;
 
 		printf("Admited process %d at time=%d", p.process_id, t);
@@ -50,12 +55,13 @@ class Scheduler {
 		running = NULL_PROCESS;
 	}
 
-	void io_request(Process p, int t){
+	void io_request(int t){
 		printf("IO requested by process %d at time=%d", running.process_id, t);
-		p.set_state(WAITING);
-		io_queue.push(p);
+		running.set_state(WAITING);
+		io_queue.push(running);
 		if(using_io == NULL_PROCESS)
-			using_io = p;
+			using_io = running;
+		running = NULL_PROCESS;
 	}
 
 	void io_completion(int t){
@@ -73,13 +79,38 @@ class Scheduler {
 	void terminate(int t){
 		printf("process %d terminated at time=%d", running.process_id, t);
 		running.set_state(TERMINATED);
+		terminated_queue.push(running);
 		running = NULL_PROCESS;
 		num_of_process -= 1;
 	}
 
 };
 
-
 void fill_job_queue(){
-	
+
+	string fname="tmp.csv";
+
+	vector<vector<string>> content;
+	vector<string> row;
+	string line, word;
+ 
+	fstream file (fname, ios::in);
+	if(file.is_open()){
+		while(getline(file, line)){
+			row.clear();
+ 
+			stringstream str(line);
+ 
+			while(getline(str, word, ','))
+				row.push_back(word);
+			
+			vector<int> bursts;
+			for(int i=2; i<row.size(); i++)
+				bursts.push_back(stoi(row[i]));
+			Process tmp = Process(stoi(row[0]), stoi(row[1]), bursts);
+			job_queue.push(tmp);
+		}
+	}
+	else cout<<"Could not open the file\n";
+
 }
