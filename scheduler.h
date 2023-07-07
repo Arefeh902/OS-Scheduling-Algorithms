@@ -14,7 +14,7 @@ Process NULL_PROCESS = Process();
 
 class Scheduler {
 	public:
-	int num_of_process;
+	int num_of_process;	
 
 	MY_Queue<Process> ready_queue;
 	Process running;
@@ -22,9 +22,19 @@ class Scheduler {
 	MY_Queue<Process> io_queue;
 	Process using_io;
 
+
+	int cpu_usage_time;
+	int turn_around_time_sum;
+	int waiting_time_sum;
+	int last_terminated_time;
+	int response_time_sum;
+
+
 	MY_Queue<Process> terminated_queue;
 
-	Scheduler() : num_of_process(0), running(NULL_PROCESS), using_io(NULL_PROCESS) {}
+	Scheduler() : num_of_process(0), running(NULL_PROCESS), using_io(NULL_PROCESS),
+				cpu_usage_time(0), turn_around_time_sum(0), waiting_time_sum(0),
+				last_terminated_time(0), response_time_sum(0) {}
 
 	void admit(int t){
 		Process p = job_queue.top();
@@ -35,7 +45,7 @@ class Scheduler {
 		
 		num_of_process += 1;
 
-		printf("Admited process %d at time=%d\n", p.process_id, t);
+		printf("time=%d: Admited process %d\n", p.process_id, t);
 	}
 
 	void dispatch(int t){
@@ -44,18 +54,18 @@ class Scheduler {
 
 		running.set_state(RUNNING);
 
-		printf("Dispatched process %d at time=%d\n", running.process_id, t);
+		printf("time=%d: Dispatched process %d\n", t, running.process_id);
 	}
 
 	void preempt(int t){
-		printf("Preempted process %d at time=%d\n", running.process_id, t);
+		printf("time=%d:Preempted process %d\n", t, running.process_id);
 		running.set_state(READY);
 		ready_queue.push(running);
 		running = NULL_PROCESS;
 	}
 
 	void io_request(int t){
-		printf("IO requested by process %d at time=%d\n", running.process_id, t);
+		printf("time=%d: IO requested by process %d\n", t, running.process_id);
 		running.set_state(WAITING);
 		if(using_io == NULL_PROCESS){
 			using_io = running;
@@ -66,19 +76,19 @@ class Scheduler {
 	}
 
 	void io_completion(int t){
-		printf("IO usage of process %d completed at time=%d\n", using_io.process_id, t);
+		printf("time=%d: IO usage of process %d completed\n", t, using_io.process_id);
 		ready_queue.push(using_io);
 		using_io.set_state(READY);
 		using_io = NULL_PROCESS;
 		if(!io_queue.empty()){
 			using_io = io_queue.top();
-			printf("IO given to process %d at time=%d\n", using_io.process_id, t);
+			printf("time=%d: IO given to process %d\n", t, using_io.process_id);
 			io_queue.pop();
 		}
 	}
 
 	void terminate(int t){
-		printf("process %d terminated at time=%d\n", running.process_id, t);
+		printf("time=%d: process %d terminated\n", t, running.process_id);
 		running.set_state(TERMINATED);
 		terminated_queue.push(running);
 		running = NULL_PROCESS;

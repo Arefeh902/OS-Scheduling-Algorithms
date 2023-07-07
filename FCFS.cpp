@@ -7,13 +7,13 @@
 using namespace std;
 
 char get_min(int admit, int cpu, int io){
-	if(cpu <= admit && cpu <= io) return 'c';
-	if(admit <= io) return 'a';
+	if(admit <= cpu && admit <= io) return 'a';
+	if(cpu <= io) return 'c';
 	return 'i';
 }
 
-
 void FCFS(){
+	
 	fill_job_queue();
 	int num_of_processes = job_queue.size;
 	cout << num_of_processes << endl;
@@ -23,28 +23,13 @@ void FCFS(){
 	int next_admit = job_queue.top().arrival_time;
 	int next_end_of_cpu_burst = INF;
 	int next_end_of_io_burst = INF;
-	Process* p = nullptr;
+	Process* p = &NULL_PROCESS;
 	while(scheduler.terminated_queue.size < num_of_processes){
 
 		char mode = get_min(next_admit, next_end_of_cpu_burst, next_end_of_io_burst);
 		cout << "==============================================" << endl;
 
-		if(mode == 'c'){
-			time = next_end_of_cpu_burst;
-
-			p = &scheduler.running;
-			if(p->index_of_burst < (p->num_of_bursts - 1)){
-				p->index_of_burst += 1;
-
-				if(scheduler.using_io == NULL_PROCESS)
-					next_end_of_io_burst = time + p->bursts[p->index_of_burst];
-				scheduler.io_request(time);
-			}else{
-				scheduler.terminate(time);
-			}
-		}
-
-		else if(mode == 'a'){
+		if(mode == 'a'){
 			time = next_admit; 
 
 			scheduler.admit(time);
@@ -56,19 +41,36 @@ void FCFS(){
 		}
 		
 		
+		else if(mode == 'c'){
+			time = next_end_of_cpu_burst;
+
+			p = &scheduler.running;
+			if(p->index_of_burst < (p->num_of_bursts - 1)){
+				p->index_of_burst += 1;
+
+				if(scheduler.using_io == NULL_PROCESS)
+					next_end_of_io_burst = time + p->bursts[p->index_of_burst];
+				scheduler.io_request(time);
+
+			}else{
+				scheduler.terminate(time);
+			}
+		}
+
 		else if(mode == 'i'){
 			time = next_end_of_io_burst;
 
 			p = &scheduler.using_io;
-			scheduler.io_completion(time);
-
+			p->index_of_burst += 1;
+			scheduler.io_completion(time);			
+			
 			if(scheduler.using_io != NULL_PROCESS){
 				next_end_of_io_burst = time + scheduler.using_io.bursts[scheduler.using_io.index_of_burst];
 			}else{
 				next_end_of_io_burst = INF;
 			}
 
-			p->index_of_burst += 1;
+			
 		}
 
 		if(scheduler.running == NULL_PROCESS && !scheduler.ready_queue.empty()){
@@ -78,6 +80,7 @@ void FCFS(){
 		if(scheduler.running == NULL_PROCESS && scheduler.ready_queue.empty()){
 			next_end_of_cpu_burst = INF;
 		}
+
 	}
 
 }
