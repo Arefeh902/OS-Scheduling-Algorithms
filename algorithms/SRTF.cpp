@@ -35,9 +35,6 @@ void SRTF(){
 			time = next_admit; 
 
 			scheduler.admit(time);
-			if(scheduler.running != NULL_PROCESS){
-				scheduler.preempt(time);
-			}
 			
 			if(!scheduler.job_queue.empty()){
 				next_admit = scheduler.job_queue.top().arrival_time;

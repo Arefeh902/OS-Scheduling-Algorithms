@@ -54,6 +54,9 @@ class SRTF_Scheduler {
 		this->ready_queue.push(p, -1*p.bursts[p.index_of_burst]);
 		p.set_state(READY);
 		p.last_entered_ready_queue = t;
+		if(running != NULL_PROCESS && p.bursts[p.index_of_burst] < running.bursts[running.index_of_burst]){
+			preempt(t);
+		}
 		
 		num_of_process += 1;
 
@@ -117,6 +120,10 @@ class SRTF_Scheduler {
 		printf("time=%d: IO usage of process %d completed\n", t, using_io.process_id);
 		
 		ready_queue.push(using_io, -1*using_io.bursts[using_io.index_of_burst]);
+		if(running != NULL_PROCESS && using_io.bursts[using_io.index_of_burst] < running.bursts[running.index_of_burst]){
+			preempt(t);
+		}
+
 		using_io.set_state(READY);
 		running.last_entered_ready_queue = t;
 
