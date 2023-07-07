@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
-#include "FCFS_Scheduler.h"
-#include "utils.h"
+#include "../schedulers/FCFS_Scheduler.h"
+#include "../utils.h"
 
 #define INF 1000000
 

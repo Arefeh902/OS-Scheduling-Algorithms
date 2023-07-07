@@ -4,27 +4,25 @@
 #include <vector>
 #include <sstream>
 
-#include "my_queue.h"
-#include "my_heap.h"
-#include "process.h"
+#include "../data_structures/my_queue.h"
+#include "../process.h"
 using namespace std;
 
 
 vector<int> NULL_V;
 Process NULL_PROCESS = Process();
 
-class SJF_Scheduler {
+class FCFS_Scheduler {
 	public:
 	int num_of_process;	
 
-    MY_Queue<Process> job_queue;
-	
-    My_Max_Heap<Process> ready_queue;
+	MY_Queue<Process> job_queue;
+
+	MY_Queue<Process> ready_queue;
 	Process running;
 
 	MY_Queue<Process> io_queue;
 	Process using_io;
-
 	
 	float last_dispatch_time;
 	float cpu_usage_time;
@@ -38,15 +36,17 @@ class SJF_Scheduler {
 
 	MY_Queue<Process> terminated_queue;
 
-	SJF_Scheduler() : num_of_process(0), running(NULL_PROCESS), using_io(NULL_PROCESS),
+	FCFS_Scheduler(MY_Queue<Process> job_queue) : num_of_process(0), running(NULL_PROCESS), using_io(NULL_PROCESS),
 				last_dispatch_time(0), cpu_usage_time(0), turn_around_time_sum(0),
-				waiting_time_sum(0), last_terminated_time(0), response_time_sum(0) {}
+				waiting_time_sum(0), last_terminated_time(0), response_time_sum(0) {
+					this->job_queue = job_queue;
+				}
 
 	void admit(int t){
 		Process p = job_queue.top();
 		job_queue.pop();
 
-		this->ready_queue.push(p, p.bursts[p.index_of_burst]);
+		this->ready_queue.push(p);
 		p.set_state(READY);
 		p.last_entered_ready_queue = t;
 		
@@ -70,7 +70,7 @@ class SJF_Scheduler {
 	void preempt(int t){
 		printf("time=%d:Preempted process %d\n", t, running.process_id);
 		running.set_state(READY);
-		ready_queue.push(running, running.bursts[running.index_of_burst]);
+		ready_queue.push(running);
 
 		running.last_entered_ready_queue = t;
 
@@ -101,7 +101,7 @@ class SJF_Scheduler {
 	void io_completion(int t){
 		printf("time=%d: IO usage of process %d completed\n", t, using_io.process_id);
 		
-		ready_queue.push(using_io, using_io.bursts[using_io.index_of_burst]);
+		ready_queue.push(using_io);
 		using_io.set_state(READY);
 		running.last_entered_ready_queue = t;
 

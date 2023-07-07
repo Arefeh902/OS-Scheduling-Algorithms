@@ -4,7 +4,7 @@
 #include <vector>
 #include <sstream>
 
-#include "my_queue.h"
+#include "data_structures/my_queue.h"
 #include "process.h"
 using namespace std;
 
