@@ -83,7 +83,7 @@ class FCFS_Scheduler {
 		printf("time=%d: IO requested by process %d\n", t, running.process_id);
 		running.set_state(WAITING);
 
-		cpu_usage_time += t - last_dispatch_time + 1;
+		cpu_usage_time += t - last_dispatch_time;
 
 		if(running.index_of_burst == 1){
 			response_time_sum += t - running.arrival_time;

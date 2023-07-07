@@ -15,7 +15,7 @@ using namespace std;
 vector<int> NULL_V;
 Process NULL_PROCESS = Process();
 
-class SJF_Scheduler {
+class SRTF_Scheduler {
 	public:
 	int num_of_process;	
 
@@ -40,7 +40,7 @@ class SJF_Scheduler {
 
 	MY_Queue<Process> terminated_queue;
 
-	SJF_Scheduler(MY_Queue<Process> job_queue) : num_of_process(0), running(NULL_PROCESS), using_io(NULL_PROCESS),
+	SRTF_Scheduler(MY_Queue<Process> job_queue) : num_of_process(0), running(NULL_PROCESS), using_io(NULL_PROCESS),
 				last_dispatch_time(0), cpu_usage_time(0), turn_around_time_sum(0),
 				waiting_time_sum(0), last_terminated_time(0), response_time_sum(0) {
 					this->job_queue = job_queue;
@@ -75,11 +75,12 @@ class SJF_Scheduler {
 	void preempt(int t){
 		printf("time=%d:Preempted process %d\n", t, running.process_id);
 		running.set_state(READY);
+		running.bursts[running.index_of_burst] -= t - last_dispatch_time;
 		ready_queue.push(running, -1*running.bursts[running.index_of_burst]);
 
 		running.last_entered_ready_queue = t;
-
 		cpu_usage_time += t - last_dispatch_time;
+
 
 		running = NULL_PROCESS;
 	}
