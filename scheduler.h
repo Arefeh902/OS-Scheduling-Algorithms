@@ -22,19 +22,22 @@ class Scheduler {
 	MY_Queue<Process> io_queue;
 	Process using_io;
 
+	
+	float last_dispatch_time;
+	float cpu_usage_time;
 
-	int cpu_usage_time;
-	int turn_around_time_sum;
-	int waiting_time_sum;
-	int last_terminated_time;
-	int response_time_sum;
+	float waiting_time_sum;
+
+	float turn_around_time_sum;
+	float last_terminated_time;
+	float response_time_sum;
 
 
 	MY_Queue<Process> terminated_queue;
 
 	Scheduler() : num_of_process(0), running(NULL_PROCESS), using_io(NULL_PROCESS),
-				cpu_usage_time(0), turn_around_time_sum(0), waiting_time_sum(0),
-				last_terminated_time(0), response_time_sum(0) {}
+				last_dispatch_time(0), cpu_usage_time(0), turn_around_time_sum(0),
+				waiting_time_sum(0), last_terminated_time(0), response_time_sum(0) {}
 
 	void admit(int t){
 		Process p = job_queue.top();
@@ -42,6 +45,7 @@ class Scheduler {
 
 		this->ready_queue.push(p);
 		p.set_state(READY);
+		p.last_entered_ready_queue = t;
 		
 		num_of_process += 1;
 
@@ -53,6 +57,9 @@ class Scheduler {
 		ready_queue.pop();
 
 		running.set_state(RUNNING);
+		waiting_time_sum += t - running.last_entered_ready_queue;
+
+		last_dispatch_time = t;
 
 		printf("time=%d: Dispatched process %d\n", t, running.process_id);
 	}
@@ -61,24 +68,40 @@ class Scheduler {
 		printf("time=%d:Preempted process %d\n", t, running.process_id);
 		running.set_state(READY);
 		ready_queue.push(running);
+
+		running.last_entered_ready_queue = t;
+
+		cpu_usage_time += t - last_dispatch_time + 1;
+
 		running = NULL_PROCESS;
 	}
 
 	void io_request(int t){
 		printf("time=%d: IO requested by process %d\n", t, running.process_id);
 		running.set_state(WAITING);
+
+		cpu_usage_time += t - last_dispatch_time + 1;
+
+		if(running.index_of_burst == 1){
+			response_time_sum += t - running.arrival_time;
+		}
+
 		if(using_io == NULL_PROCESS){
 			using_io = running;
 		}else{
 			io_queue.push(running);
 		}
+
 		running = NULL_PROCESS;
 	}
 
 	void io_completion(int t){
 		printf("time=%d: IO usage of process %d completed\n", t, using_io.process_id);
+		
 		ready_queue.push(using_io);
 		using_io.set_state(READY);
+		running.last_entered_ready_queue = t;
+
 		using_io = NULL_PROCESS;
 		if(!io_queue.empty()){
 			using_io = io_queue.top();
@@ -89,13 +112,19 @@ class Scheduler {
 
 	void terminate(int t){
 		printf("time=%d: process %d terminated\n", t, running.process_id);
+		
 		running.set_state(TERMINATED);
+		turn_around_time_sum += t - running.arrival_time;
 		terminated_queue.push(running);
+		
 		running = NULL_PROCESS;
 		num_of_process -= 1;
+
+		last_terminated_time = t;
 	}
 
 };
+
 
 void fill_job_queue(){
 

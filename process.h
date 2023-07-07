@@ -13,8 +13,8 @@ class Process {
 	vector<int> bursts;
 	int index_of_burst;
 	int num_of_bursts;
-
-	public:
+	int last_entered_ready_queue;
+	
 	Process(){
 		this->state = NEW;
 		this->process_id = 0;
@@ -24,21 +24,18 @@ class Process {
 		this->bursts = v;
 		this->index_of_burst = 0;
 		this->num_of_bursts = 0;
+		this->last_entered_ready_queue = 0;
 	}
+
 	Process(int process_id, int arrival_time, vector<int> bursts){
 		this->state = NEW;
 		this->process_id = process_id;
 		this->arrival_time = arrival_time;
 
-		// cout << "====================";
-		// cout << process_id << endl;
-		// for (const auto& burst : bursts) {
-		//    cout << burst << " ";
-		// }cout << endl;
-
 		this->bursts = bursts;
 		this->index_of_burst = 0;
 		this->num_of_bursts = 3;
+		this->last_entered_ready_queue = 0;
 	}
 
 	void set_state(ProcessState state){
