@@ -17,6 +17,7 @@ void FCFS(){
 	
 	FCFS_Scheduler scheduler = FCFS_Scheduler(fill_job_queue());
 	int num_of_processes = scheduler.job_queue.size;
+	scheduler.file << num_of_processes << endl;
 	cout << num_of_processes << endl;
 	
 	

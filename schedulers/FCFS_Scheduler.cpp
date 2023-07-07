@@ -72,7 +72,7 @@ class FCFS_Scheduler {
 
 	void preempt(int t){
 		file << "time=" << t << ", process_id=" << running.process_id << ", action=preept" << endl; 
-		printf("time=%d:Preempted process %d\n", t, running.process_id);
+		printf("time=%d: Preempted process %d\n", t, running.process_id);
 		running.set_state(READY);
 		ready_queue.push(running);
 
