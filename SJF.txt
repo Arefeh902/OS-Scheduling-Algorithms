@@ -1,27 +1,28 @@
+3
 time=1, process_id=1, action=admit
 time=1, process_id=1, action=dispatch
-time=2, process_id=2, action=admit
+time=4, process_id=2, action=admit
 time=5, process_id=3, action=admit
-time=6, process_id=1, action=io_request
-time=6, process_id=1, action=io_givento
-time=6, process_id=3, action=dispatch
-time=7, process_id=3, action=io_request
-time=7, process_id=2, action=dispatch
-time=7, process_id=1, action=io_complete
-time=7, process_id=3, action=io_givento
-time=8, process_id=3, action=io_complete
-time=9, process_id=2, action=io_request
-time=9, process_id=2, action=io_givento
-time=9, process_id=1, action=dispatch
-time=10, process_id=1, action=terminate
+time=10, process_id=1, action=io_request
+time=10, process_id=1, action=io_givento
 time=10, process_id=3, action=dispatch
-time=13, process_id=3, action=terminate
-time=16, process_id=2, action=io_complete
-time=16, process_id=2, action=dispatch
-time=17, process_id=2, action=terminate
+time=11, process_id=1, action=io_complete
+time=14, process_id=3, action=io_request
+time=14, process_id=3, action=io_givento
+time=14, process_id=1, action=dispatch
+time=15, process_id=1, action=terminate
+time=15, process_id=2, action=dispatch
+time=15, process_id=3, action=io_complete
+time=20, process_id=2, action=io_request
+time=20, process_id=2, action=io_givento
+time=20, process_id=3, action=dispatch
+time=23, process_id=3, action=terminate
+time=27, process_id=2, action=io_complete
+time=27, process_id=2, action=dispatch
+time=28, process_id=2, action=terminate
 ==============================================
-utilization    : 76.4706
-troughput      : 0.176471
-waiting time   : 13.6667
-turnaround time: 10.6667
-response time  : 4.66667
+utilization    : 82.1429
+troughput      : 0.107143
+waiting time   : 20.3333
+turnaround time: 18.6667
+response time  : 11.3333

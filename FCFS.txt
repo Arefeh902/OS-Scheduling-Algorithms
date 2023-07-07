@@ -1,27 +1,42 @@
+5
 time=1, process_id=1, action=admit
 time=1, process_id=1, action=dispatch
-time=2, process_id=2, action=admit
+time=4, process_id=2, action=admit
 time=5, process_id=3, action=admit
-time=6, process_id=1, action=io_request
-time=6, process_id=1, action=io_givento
-time=6, process_id=3, action=dispatch
-time=7, process_id=3, action=io_request
-time=7, process_id=2, action=dispatch
-time=7, process_id=1, action=io_complete
-time=7, process_id=3, action=io_givento
-time=8, process_id=3, action=io_complete
-time=9, process_id=2, action=io_request
-time=9, process_id=2, action=io_givento
-time=9, process_id=1, action=dispatch
-time=10, process_id=1, action=terminate
-time=10, process_id=3, action=dispatch
-time=13, process_id=3, action=terminate
-time=16, process_id=2, action=io_complete
-time=16, process_id=2, action=dispatch
-time=17, process_id=2, action=terminate
+time=7, process_id=4, action=admit
+time=10, process_id=5, action=admit
+time=10, process_id=1, action=io_request
+time=10, process_id=1, action=io_givento
+time=10, process_id=2, action=dispatch
+time=11, process_id=1, action=io_complete
+time=15, process_id=2, action=io_request
+time=15, process_id=2, action=io_givento
+time=15, process_id=3, action=dispatch
+time=19, process_id=3, action=io_request
+time=19, process_id=4, action=dispatch
+time=22, process_id=4, action=io_request
+time=22, process_id=5, action=dispatch
+time=22, process_id=2, action=io_complete
+time=22, process_id=3, action=io_givento
+time=23, process_id=3, action=io_complete
+time=23, process_id=4, action=io_givento
+time=25, process_id=4, action=io_complete
+time=31, process_id=5, action=io_request
+time=31, process_id=5, action=io_givento
+time=31, process_id=1, action=dispatch
+time=32, process_id=1, action=terminate
+time=32, process_id=2, action=dispatch
+time=33, process_id=2, action=terminate
+time=33, process_id=3, action=dispatch
+time=36, process_id=3, action=terminate
+time=36, process_id=4, action=dispatch
+time=41, process_id=4, action=terminate
+time=41, process_id=5, action=io_complete
+time=41, process_id=5, action=dispatch
+time=43, process_id=5, action=terminate
 ==============================================
-utilization    : 76.4706
-troughput      : 0.176471
-waiting time   : 13.6667
-turnaround time: 10.6667
-response time  : 4.66667
+utilization    : 97.6744
+troughput      : 0.116279
+waiting time   : 40.8
+turnaround time: 31.6
+response time  : 14
