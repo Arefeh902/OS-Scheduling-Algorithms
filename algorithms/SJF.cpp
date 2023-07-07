@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "../schedulers/FCFS_Scheduler.h"
+#include "../schedulers/SJF_Scheduler.h"
 #include "../utils.h"
 
 #define INF 1000000
@@ -13,9 +13,9 @@ char get_min(int admit, int cpu, int io){
 	return 'i';
 }
 
-void FCFS(){
+void SJF(){
 	
-	FCFS_Scheduler scheduler = FCFS_Scheduler(fill_job_queue());
+	SJF_Scheduler scheduler = SJF_Scheduler(fill_job_queue());
 	int num_of_processes = scheduler.job_queue.size;
 	cout << num_of_processes << endl;
 	
@@ -34,6 +34,7 @@ void FCFS(){
 			time = next_admit; 
 
 			scheduler.admit(time);
+			
 			if(!scheduler.job_queue.empty()){
 				next_admit = scheduler.job_queue.top().arrival_time;
 			}else{
@@ -84,15 +85,17 @@ void FCFS(){
 
 	}
 
-	cout << "=================================" << endl;
+	cout << "==============================================" << endl;
+	cout << "==============================================" << endl;
 	cout << "utilization    : " << (scheduler.cpu_usage_time / scheduler.last_terminated_time) * 100 << endl;
 	cout << "troughput      : " << num_of_processes / scheduler.last_terminated_time << endl;;
 	cout << "waiting time   : " << scheduler.waiting_time_sum / num_of_processes << endl;
 	cout << "turnaround time: " << scheduler.turn_around_time_sum / num_of_processes  << endl;
 	cout << "response time  : " << scheduler.response_time_sum / num_of_processes << endl;
+
 }
 
 
 int main(){
-	FCFS();
+	SJF();
 }

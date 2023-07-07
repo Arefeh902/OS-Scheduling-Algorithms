@@ -74,7 +74,7 @@ class FCFS_Scheduler {
 
 		running.last_entered_ready_queue = t;
 
-		cpu_usage_time += t - last_dispatch_time + 1;
+		cpu_usage_time += t - last_dispatch_time;
 
 		running = NULL_PROCESS;
 	}
@@ -119,6 +119,9 @@ class FCFS_Scheduler {
 		running.set_state(TERMINATED);
 		turn_around_time_sum += t - running.arrival_time;
 		terminated_queue.push(running);
+
+		cpu_usage_time += t - last_dispatch_time;
+
 		
 		running = NULL_PROCESS;
 		num_of_process -= 1;
