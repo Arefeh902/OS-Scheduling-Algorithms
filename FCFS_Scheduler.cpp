@@ -8,20 +8,21 @@
 #include "process.h"
 using namespace std;
 
-MY_Queue<Process> job_queue;
+
 vector<int> NULL_V;
 Process NULL_PROCESS = Process();
 
-class Scheduler {
+class FCFS_Scheduler {
 	public:
 	int num_of_process;	
+
+	MY_Queue<Process> job_queue;
 
 	MY_Queue<Process> ready_queue;
 	Process running;
 
 	MY_Queue<Process> io_queue;
 	Process using_io;
-
 	
 	float last_dispatch_time;
 	float cpu_usage_time;
@@ -35,9 +36,11 @@ class Scheduler {
 
 	MY_Queue<Process> terminated_queue;
 
-	Scheduler() : num_of_process(0), running(NULL_PROCESS), using_io(NULL_PROCESS),
+	FCFS_Scheduler(MY_Queue<Process> job_queue) : num_of_process(0), running(NULL_PROCESS), using_io(NULL_PROCESS),
 				last_dispatch_time(0), cpu_usage_time(0), turn_around_time_sum(0),
-				waiting_time_sum(0), last_terminated_time(0), response_time_sum(0) {}
+				waiting_time_sum(0), last_terminated_time(0), response_time_sum(0) {
+					this->job_queue = job_queue;
+				}
 
 	void admit(int t){
 		Process p = job_queue.top();
@@ -124,33 +127,3 @@ class Scheduler {
 	}
 
 };
-
-
-void fill_job_queue(){
-
-	string fname="tmp.csv";
-
-	vector<vector<string>> content;
-	vector<string> row;
-	string line, word;
- 
-	fstream file (fname, ios::in);
-	if(file.is_open()){
-		while(getline(file, line)){
-			row.clear();
- 
-			stringstream str(line);
- 
-			while(getline(str, word, ','))
-				row.push_back(word);
-			
-			vector<int> bursts;
-			for(int i=2; i<row.size(); i++)
-				bursts.push_back(stoi(row[i]));
-			Process tmp = Process(stoi(row[0]), stoi(row[1]), bursts);
-			job_queue.push(tmp);
-		}
-	}
-	else cout<<"Could not open the file\n";
-
-}

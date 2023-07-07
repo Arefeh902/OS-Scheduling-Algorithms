@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
-#include "scheduler.h"
+#include "FCFS_Scheduler.h"
+#include "utils.h"
 
 #define INF 1000000
 
@@ -14,13 +15,13 @@ char get_min(int admit, int cpu, int io){
 
 void FCFS(){
 	
-	fill_job_queue();
-	int num_of_processes = job_queue.size;
+	FCFS_Scheduler scheduler = FCFS_Scheduler(fill_job_queue());
+	int num_of_processes = scheduler.job_queue.size;
 	cout << num_of_processes << endl;
-	Scheduler scheduler;
+	
 	
 	int time = 0;
-	int next_admit = job_queue.top().arrival_time;
+	int next_admit = scheduler.job_queue.top().arrival_time;
 	int next_end_of_cpu_burst = INF;
 	int next_end_of_io_burst = INF;
 	Process* p = &NULL_PROCESS;
@@ -33,8 +34,8 @@ void FCFS(){
 			time = next_admit; 
 
 			scheduler.admit(time);
-			if(!job_queue.empty()){
-				next_admit = job_queue.top().arrival_time;
+			if(!scheduler.job_queue.empty()){
+				next_admit = scheduler.job_queue.top().arrival_time;
 			}else{
 				next_admit = INF;
 			}
