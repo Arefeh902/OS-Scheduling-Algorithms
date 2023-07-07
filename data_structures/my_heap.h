@@ -26,7 +26,7 @@ public:
 	void push(T data, int priority) {
 		arr.push_back(Node(data, priority));
 		int tmp = size;
-		while (tmp > 1 && arr[tmp].priority > arr[(tmp-1)/2].priority) {
+		while (tmp > 0 && arr[tmp].priority > arr[(tmp-1)/2].priority) {
 			Node swap_helper = arr[(tmp-1)/2];
 			arr[(tmp-1)/2] = arr[tmp];
 			arr[tmp] = swap_helper;
