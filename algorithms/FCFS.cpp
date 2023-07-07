@@ -84,12 +84,19 @@ void FCFS(){
 
 	}
 
-	cout << "=================================" << endl;
+	cout << "==============================================" << endl;
 	cout << "utilization    : " << (scheduler.cpu_usage_time / scheduler.last_terminated_time) * 100 << endl;
 	cout << "troughput      : " << num_of_processes / scheduler.last_terminated_time << endl;;
 	cout << "waiting time   : " << scheduler.waiting_time_sum / num_of_processes << endl;
 	cout << "turnaround time: " << scheduler.turn_around_time_sum / num_of_processes  << endl;
 	cout << "response time  : " << scheduler.response_time_sum / num_of_processes << endl;
+
+	scheduler.file << "==============================================" << endl;
+	scheduler.file << "utilization    : " << (scheduler.cpu_usage_time / scheduler.last_terminated_time) * 100 << endl;
+	scheduler.file << "troughput      : " << num_of_processes / scheduler.last_terminated_time << endl;;
+	scheduler.file << "waiting time   : " << scheduler.waiting_time_sum / num_of_processes << endl;
+	scheduler.file << "turnaround time: " << scheduler.turn_around_time_sum / num_of_processes  << endl;
+	scheduler.file << "response time  : " << scheduler.response_time_sum / num_of_processes << endl;
 }
 
 

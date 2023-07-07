@@ -32,14 +32,15 @@ class FCFS_Scheduler {
 	float turn_around_time_sum;
 	float last_terminated_time;
 	float response_time_sum;
-
+	ofstream file;
 
 	MY_Queue<Process> terminated_queue;
 
 	FCFS_Scheduler(MY_Queue<Process> job_queue) : num_of_process(0), running(NULL_PROCESS), using_io(NULL_PROCESS),
 				last_dispatch_time(0), cpu_usage_time(0), turn_around_time_sum(0),
 				waiting_time_sum(0), last_terminated_time(0), response_time_sum(0) {
-					this->job_queue = job_queue;
+				this->job_queue = job_queue;
+				file.open("FCFS.txt");  
 				}
 
 	void admit(int t){
@@ -52,6 +53,7 @@ class FCFS_Scheduler {
 		
 		num_of_process += 1;
 
+		file << "time=" << t << ", process_id=" << p.process_id << ", action=admit" << endl; 
 		printf("time=%d: Admited process %d\n", p.process_id, t);
 	}
 
@@ -64,10 +66,12 @@ class FCFS_Scheduler {
 
 		last_dispatch_time = t;
 
+		file << "time=" << t << ", process_id=" << running.process_id << ", action=dispatch" << endl; 
 		printf("time=%d: Dispatched process %d\n", t, running.process_id);
 	}
 
 	void preempt(int t){
+		file << "time=" << t << ", process_id=" << running.process_id << ", action=preept" << endl; 
 		printf("time=%d:Preempted process %d\n", t, running.process_id);
 		running.set_state(READY);
 		ready_queue.push(running);
@@ -80,6 +84,7 @@ class FCFS_Scheduler {
 	}
 
 	void io_request(int t){
+		file << "time=" << t << ", process_id=" << running.process_id << ", action=io_request" << endl; 
 		printf("time=%d: IO requested by process %d\n", t, running.process_id);
 		running.set_state(WAITING);
 
@@ -91,6 +96,8 @@ class FCFS_Scheduler {
 
 		if(using_io == NULL_PROCESS){
 			using_io = running;
+			file << "time=" << t << ", process_id=" << using_io.process_id << ", action=io_givento" << endl; 
+			printf("time=%d: IO given to process %d\n", t, using_io.process_id);
 		}else{
 			io_queue.push(running);
 		}
@@ -99,6 +106,7 @@ class FCFS_Scheduler {
 	}
 
 	void io_completion(int t){
+		file << "time=" << t << ", process_id=" << using_io.process_id << ", action=io_complete" << endl; 
 		printf("time=%d: IO usage of process %d completed\n", t, using_io.process_id);
 		
 		ready_queue.push(using_io);
@@ -108,12 +116,14 @@ class FCFS_Scheduler {
 		using_io = NULL_PROCESS;
 		if(!io_queue.empty()){
 			using_io = io_queue.top();
+			file << "time=" << t << ", process_id=" << using_io.process_id << ", action=io_givento" << endl; 
 			printf("time=%d: IO given to process %d\n", t, using_io.process_id);
 			io_queue.pop();
 		}
 	}
 
 	void terminate(int t){
+		file << "time=" << t << ", process_id=" << running.process_id << ", action=terminate" << endl; 
 		printf("time=%d: process %d terminated\n", t, running.process_id);
 		
 		running.set_state(TERMINATED);
