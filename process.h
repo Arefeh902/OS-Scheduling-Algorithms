@@ -52,6 +52,14 @@ class Process {
 		return process_id != other.process_id;
 	}
 
+	bool operator<(const Process& other) const {
+		return process_id < other.process_id;
+	}
+
+	bool operator>(const Process& other) const {
+		return process_id > other.process_id;
+	}
+
 	friend std::ostream& operator<<(std::ostream& os, const Process& obj) {
         os << obj.process_id;
         return os;

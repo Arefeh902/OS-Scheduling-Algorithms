@@ -1,0 +1,28 @@
+3
+time=1, process_id=1, action=admit
+time=1, process_id=1, action=dispatch
+time=4, process_id=2, action=admit
+time=5, process_id=3, action=admit
+time=6, process_id=1, action=io_request
+time=6, process_id=1, action=io_givento
+time=6, process_id=3, action=dispatch
+time=7, process_id=1, action=io_complete
+time=10, process_id=3, action=io_request
+time=10, process_id=3, action=io_givento
+time=10, process_id=1, action=dispatch
+time=11, process_id=1, action=terminate
+time=11, process_id=2, action=dispatch
+time=11, process_id=3, action=io_complete
+time=19, process_id=2, action=io_request
+time=19, process_id=2, action=io_givento
+time=19, process_id=3, action=dispatch
+time=22, process_id=3, action=terminate
+time=26, process_id=2, action=io_complete
+time=26, process_id=2, action=dispatch
+time=27, process_id=2, action=terminate
+==============================================
+utilization    : 81.4815
+troughput      : 0.111111
+waiting time   : 18.3333
+turnaround time: 16.6667
+response time  : 8.33333
