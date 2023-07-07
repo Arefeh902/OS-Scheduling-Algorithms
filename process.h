@@ -35,7 +35,7 @@ class Process {
 		this->bursts = bursts;
 		this->index_of_burst = 0;
 		this->num_of_bursts = 3;
-		this->last_entered_ready_queue = 0;
+		this->last_entered_ready_queue = 0;;
 	}
 
 	void set_state(ProcessState state){
