@@ -16,6 +16,7 @@ class Process {
 	int index_of_burst;
 	int num_of_bursts;
 	int last_entered_ready_queue;
+	int queue_level;
 	
 	Process(){
 		this->state = NEW;
@@ -27,6 +28,7 @@ class Process {
 		this->index_of_burst = 0;
 		this->num_of_bursts = 0;
 		this->last_entered_ready_queue = 0;
+		this->queue_level = -1;
 	}
 
 	Process(int process_id, int arrival_time, vector<int> bursts){
@@ -38,6 +40,7 @@ class Process {
 		this->index_of_burst = 0;
 		this->num_of_bursts = 3;
 		this->last_entered_ready_queue = 0;;
+		this->queue_level = -1;
 	}
 
 	void set_state(ProcessState state){
